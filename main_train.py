@@ -1,27 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# =============================================================================
-#  @article{zhang2017beyond,
-#    title={Beyond a {Gaussian} denoiser: Residual learning of deep {CNN} for image denoising},
-#    author={Zhang, Kai and Zuo, Wangmeng and Chen, Yunjin and Meng, Deyu and Zhang, Lei},
-#    journal={IEEE Transactions on Image Processing},
-#    year={2017},
-#    volume={26}, 
-#    number={7}, 
-#    pages={3142-3155}, 
-#  }
-# by Kai Zhang (08/2018)
-# cskaizhang@gmail.com
-# https://github.com/cszn
-# modified on the code from https://github.com/husqin/DnCNN-keras
-# =============================================================================
-
-# run this to train the model
-
-# =============================================================================
-# For batch normalization layer, momentum should be a value from [0, 0.9] rather than the default 0.99. 
-# The Gaussian noise output helps to stablize the batch normalization, thus a small momentum is preferred.
-# =============================================================================
 
 import argparse
 import re
