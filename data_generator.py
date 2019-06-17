@@ -1,9 +1,7 @@
 
 import glob
-#import os
 import cv2
 import numpy as np
-#from multiprocessing import Pool
 
 
 patch_size, stride = 40, 10
@@ -83,11 +81,3 @@ def datagenerator(data_dir='data/Train400',verbose=False):
 if __name__ == '__main__':   
 
     data = datagenerator(data_dir='data/Train400')
-    
-
-#    print('Shape of result = ' + str(res.shape))
-#    print('Saving data...')
-#    if not os.path.exists(save_dir):
-#            os.mkdir(save_dir)
-#    np.save(save_dir+'clean_patches.npy', res)
-#    print('Done.')       
