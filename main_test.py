@@ -4,7 +4,7 @@
 import argparse
 import os, time, datetime
 #export CUDA_VISIBLE_DEVICES=2
-#os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 #import PIL.Image as Image
 import numpy as np
 from keras.models import load_model, model_from_json
@@ -21,6 +21,7 @@ def parse_args():
     parser.add_argument('--model_name', default='model_050.hdf5', type=str, help='the model name')
     parser.add_argument('--result_dir', default='results', type=str, help='directory of results')
     parser.add_argument('--save_result', default=1, type=int, help='save the denoised image, 1 or 0')
+    print(parser.parse_args())
     return parser.parse_args()
     
 def to_tensor(img):
