@@ -8,7 +8,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import numpy as np
 from keras.layers import  Input,Conv2D,BatchNormalization,Activation,Subtract, Add
 from keras.models import Model, load_model
-from keras.callbacks import CSVLogger, ModelCheckpoint, LearningRateScheduler
+from keras.callbacks import CSVLogger, ModelCheckpoint, LearningRateScheduler, ReduceLROnPlateau
 from keras.optimizers import Adam
 import data_generator as dg
 import keras.backend as K
@@ -146,7 +146,6 @@ def val_datagen(epoch_num=5,batch_size=128,data_dir=args.val_data):
     while(True):
         n_count = 0
         if n_count == 0:
-            #print(n_count)
             xs = dg.datagenerator(data_dir)
             assert len(xs)%args.batch_size ==0, \
             log('make sure the last iteration has a full batchsize, this is important if you use batch normalization!')
@@ -188,13 +187,16 @@ if __name__ == '__main__':
     model.compile(optimizer=Adam(0.001), loss=sum_squared_error)
     
     # use call back functions
-    checkpointer = ModelCheckpoint(os.path.join(save_dir,'model_{epoch:03d}.hdf5'), 
-                verbose=1, save_weights_only=False, period=args.save_every)
+    checkpointer = ModelCheckpoint(os.path.join(save_dir,'model_{epoch:03d}.hdf5'), verbose=1, period=args.save_every, save_best_only=True)
     csv_logger = CSVLogger(os.path.join(save_dir,'log.csv'), append=True, separator=',')
-    lr_scheduler = LearningRateScheduler(lr_schedule)
-    
-#    history = model.fit_generator(train_datagen(batch_size=args.batch_size),
-#                steps_per_epoch=steps_per_epoch, epochs=args.epoch, verbose=1, initial_epoch=initial_epoch,
+
+    # criteria to reduce the learning rate
+    # lr_scheduler = LearningRateScheduler(lr_schedule)
+
+    # Reduce learning rate if there is no improvement in last x epochs
+    lr_scheduler = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=0.00001)
+
+
     history = model.fit_generator(train_datagen(batch_size=args.batch_size),steps_per_epoch=steps_per_epoch, epochs=args.epoch, verbose=1,
                                   initial_epoch=initial_epoch, validation_data=val_datagen(batch_size=args.batch_size),validation_steps=1,
                 callbacks=[checkpointer,csv_logger,lr_scheduler])

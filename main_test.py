@@ -5,7 +5,6 @@ import argparse
 import os, time, datetime
 #export CUDA_VISIBLE_DEVICES=2
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-#import PIL.Image as Image
 import numpy as np
 from keras.models import load_model, model_from_json
 from skimage.measure import compare_psnr, compare_ssim
@@ -59,17 +58,6 @@ def show(x,title=None,cbar=False,figsize=None):
 if __name__ == '__main__':    
     
     args = parse_args()
-    
-    
-    # =============================================================================
-    #     # serialize model to JSON
-    #     model_json = model.to_json()
-    #     with open("model.json", "w") as json_file:
-    #         json_file.write(model_json)
-    #     # serialize weights to HDF5
-    #     model.save_weights("model.h5")
-    #     print("Saved model")
-    # =============================================================================
 
     if not os.path.exists(os.path.join(args.model_dir, args.model_name)):
         # load json and create model
